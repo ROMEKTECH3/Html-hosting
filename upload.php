@@ -34,17 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
 
     if (!empty($uploadedFiles)) {
         $folderURL = "https://" . $_SERVER['HTTP_HOST'] . "/uploads/$customName/";
-        echo "<div class='url-box'><a href='$folderURL' target='_blank'>$folderURL</a> <button class='copy-btn' onclick='copyToClipboard(\"$folderURL\")'>Copy</button></div>";
+        echo "<script>
+                document.getElementById('upload-result').innerHTML = 
+                `<div class='url-box'>
+                    <a href='$folderURL' target='_blank'>$folderURL</a> 
+                    <button class='copy-btn' onclick='copyToClipboard(\"$folderURL\")'>Copy</button>
+                </div>`;
+              </script>";
     }
 }
 ?>
-
-<script>
-    function copyToClipboard(url) {
-        navigator.clipboard.writeText(url).then(() => {
-            alert("Copied: " + url);
-        }).catch(err => {
-            console.error('Error copying link: ', err);
-        });
-    }
-</script>
