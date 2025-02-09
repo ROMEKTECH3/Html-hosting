@@ -19,8 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
 
         if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
-            echo "<script>alert('❌ Only HTML, CSS, JS, PHP, JSON, and Python files allowed.');</script>";
-            continue;
+            die("❌ Only HTML, CSS, JS, PHP, JSON, and Python files allowed.");
         }
 
         $uploadedFile = $uploadDir . basename($fileName);
@@ -32,11 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
 
     if (!empty($uploadedFiles)) {
         $folderURL = "https://" . $_SERVER['HTTP_HOST'] . "/uploads/$customName/";
-        echo "<script>
-                document.getElementById('upload-result').style.display = 'flex';
-                document.getElementById('uploaded-url').href = '$folderURL';
-                document.getElementById('uploaded-url').innerText = '$folderURL';
-              </script>";
+        echo $folderURL;
     }
 }
 ?>
