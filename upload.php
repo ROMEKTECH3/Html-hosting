@@ -1,17 +1,15 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
-    $uploadBaseDir = 'uploads/'; // Main folder
+    $uploadBaseDir = 'uploads/'; 
     $allowedExtensions = ['html', 'css', 'js', 'php', 'txt'];
 
-    // 🟢 User-defined folder name (or auto-generate random name)
     $customName = isset($_POST['folderName']) ? preg_replace('/[^a-zA-Z0-9-_]/', '', $_POST['folderName']) : '';
     if (empty($customName)) {
-        $customName = substr(md5(uniqid()), 0, 8); // Default random name
+        $customName = substr(md5(uniqid()), 0, 8); 
     }
 
     $uploadDir = $uploadBaseDir . $customName . '/';
 
-    // Create folder if not exists
     if (!file_exists($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
@@ -28,16 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
         $uploadedFile = $uploadDir . basename($fileName);
 
         if (move_uploaded_file($_FILES['uploadedFile']['tmp_name'][$key], $uploadedFile)) {
-            $hostedURL = "https://" . $_SERVER['HTTP_HOST'] . "/uploads/$customName/" . $fileName;
-            $uploadedFiles[] = "<div class='url-box'><a href='$hostedURL' target='_blank'>$hostedURL</a> <button onclick='copyToClipboard(\"$hostedURL\")'>Copy</button></div>";
+            $uploadedFiles[] = $fileName;
         } else {
             echo "<div class='url-box'>❌ Error uploading file: $fileName</div>";
         }
     }
 
-    // Display uploaded file links
     if (!empty($uploadedFiles)) {
-        echo implode("", $uploadedFiles);
+        $folderURL = "https://" . $_SERVER['HTTP_HOST'] . "/uploads/$customName/";
+        echo "<div class='url-box'><a href='$folderURL' target='_blank'>$folderURL</a> <button class='copy-btn' onclick='copyToClipboard(\"$folderURL\")'>Copy</button></div>";
     }
 }
 ?>
