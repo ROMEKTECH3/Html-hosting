@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: my-php-app
+    runtime: docker
+    repo: https://github.com/ROMEKTECH3/Html-hosting
+    plan: free
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 80
