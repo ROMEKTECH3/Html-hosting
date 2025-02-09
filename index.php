@@ -19,20 +19,6 @@
             height: 100vh;
             position: relative;
         }
-        .social-icons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-        }
-        .social-icons a img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-        .social-icons a img:hover { transform: scale(1.1); }
         .container { 
             width: 90%; max-width: 500px;
             background: rgba(0, 0, 0, 0.8);
@@ -52,7 +38,6 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
         }
         button:hover { background: linear-gradient(135deg, #0066ff, #00ccff); }
         .url-box {
@@ -81,39 +66,14 @@
             border-radius: 5px;
             font-weight: bold;
         }
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #aaa;
-        }
-        .visitor-counter {
-            font-size: 14px;
-            margin-top: 10px;
-            color: #ffcc00;
-        }
     </style>
 </head>
 <body>
 
-    <div class="social-icons">
-        <a href="https://whatsapp.com/channel/0029VakaPzeD38CV78dbGf0e" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-        </a>
-        <a href="https://t.me/your_channel" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-        </a>
-        <a href="https://www.youtube.com/your_channel" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_logo.png" alt="YouTube">
-        </a>
-        <a href="https://github.com/your_profile" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
-        </a>
-    </div>
-
     <div class="container">
         <h2>Zaynix-XD Hosting</h2>
         <p>Upload Files & Get a Custom URL</p>
-        <form action="upload.php" method="post" enctype="multipart/form-data">
+        <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
             <input type="text" name="folderName" placeholder="Enter Folder Name (optional)">
             <input type="file" name="uploadedFile[]" multiple required>
             <button type="submit">Upload</button>
@@ -123,27 +83,21 @@
             <a id="uploaded-url" href="#" target="_blank"></a>
             <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
         </div>
-
-        <div class="visitor-counter">
-            <?php
-                $file = "visitors.txt";
-
-                if (!file_exists($file)) {
-                    file_put_contents($file, "0");
-                }
-
-                $count = (int)file_get_contents($file);
-                $count++;
-                file_put_contents($file, $count);
-
-                echo "Visitors: " . $count;
-            ?>
-        </div>
     </div>
 
-    <div class="footer">Made by ROMEK-XD</div>
-
     <script>
+        document.getElementById("upload-form").onsubmit = async function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData(this);
+            let response = await fetch("upload.php", { method: "POST", body: formData });
+            let result = await response.text();
+
+            document.getElementById("upload-result").style.display = "flex";
+            document.getElementById("uploaded-url").href = result;
+            document.getElementById("uploaded-url").innerText = result;
+        };
+
         function copyToClipboard() {
             let url = document.getElementById("uploaded-url").innerText;
             navigator.clipboard.writeText(url).then(() => {
