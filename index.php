@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Zaynix-XD Hosting</title>
+    <title>Zaynix web Hosting</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Fast & Secure File Hosting">
     <style>
@@ -38,6 +38,7 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
+            border: none;
         }
         button:hover { background: linear-gradient(135deg, #0066ff, #00ccff); }
         .url-box {
@@ -71,6 +72,30 @@
             font-weight: bold;
             margin-left: 10px;
         }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            text-align: center;
+            color: #bbb;
+        }
+        .footer a {
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+            color: white;
+        }
+        .whatsapp {
+            background: #25D366;
+            color: white;
+        }
+        .whatsapp i {
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
@@ -79,7 +104,7 @@
         <h2>Zaynix-XD Hosting</h2>
         <p>Upload Files & Get a Custom URL</p>
         <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
-            <input type="text" name="folderName" placeholder="Enter Folder Name (optional)">
+            <input type="text" name="folderName" placeholder="enter web name">
             <input type="file" name="uploadedFile[]" multiple required>
             <button type="submit">Upload</button>
         </form>
@@ -88,6 +113,13 @@
             <a id="uploaded-url" href="#" target="_blank"></a>
             <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
         </div>
+    </div>
+
+    <div class="footer">
+        <a href="https://whatsapp.com/channel/0029VakaPzeD38CV78dbGf0e" target="_blank" class="whatsapp">
+            <i class="fab fa-whatsapp"></i> WhatsApp Channel
+        </a>
+        <p>MADE BY <span style="color: red;">❤</span> ROMEK-XD</p>
     </div>
 
     <script>
