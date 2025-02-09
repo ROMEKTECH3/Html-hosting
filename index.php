@@ -61,7 +61,7 @@
             border-radius: 5px;
             margin-top: 20px;
             font-size: 14px;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: space-between;
         }
@@ -102,7 +102,7 @@
         <a href="https://t.me/your_channel" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
         </a>
-        <a href="https://youtube.com/your_channel" target="_blank">
+        <a href="https://www.youtube.com/your_channel" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_logo.png" alt="YouTube">
         </a>
         <a href="https://github.com/your_profile" target="_blank">
@@ -119,7 +119,10 @@
             <button type="submit">Upload</button>
         </form>
 
-        <div id="upload-result"></div>  <!-- URL yaha aayega -->
+        <div id="upload-result" class="url-box">
+            <a id="uploaded-url" href="#" target="_blank"></a>
+            <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+        </div>
 
         <div class="visitor-counter">
             <?php
@@ -141,11 +144,10 @@
     <div class="footer">Made by ROMEK-XD</div>
 
     <script>
-        function copyToClipboard(url) {
+        function copyToClipboard() {
+            let url = document.getElementById("uploaded-url").innerText;
             navigator.clipboard.writeText(url).then(() => {
                 alert("Copied: " + url);
-            }).catch(err => {
-                console.error('Error copying link: ', err);
             });
         }
     </script>
