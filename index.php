@@ -3,7 +3,7 @@
 <head>
     <title>Zaynix-XD Hosting</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta name="description" content="Zaynix-XD Hosting - Fast & Secure HTML Hosting">
+    <meta name="description" content="Zaynix-XD Hosting - Fast & Secure File Hosting">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,39 +26,41 @@
 <body>
     <div class="banner">
         Zaynix-XD Hosting
-        <span>Fast & Secure HTML Hosting</span>
+        <span>Fast & Secure File Hosting</span>
     </div>
     <div class="container">
         <form method="post" enctype="multipart/form-data">
-            <input type="file" name="uploadedFile">
+            <input type="file" name="uploadedFile[]" multiple>
             <input type="submit" value="Upload">
         </form>
 
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
             $uploadDir = 'uploads/';
-            $allowedExtension = 'html';
+            $allowedExtensions = ['html', 'css', 'js', 'php'];
 
-            $fileExtension = pathinfo($_FILES['uploadedFile']['name'], PATHINFO_EXTENSION);
+            foreach ($_FILES['uploadedFile']['name'] as $key => $fileName) {
+                $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+                
+                if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
+                    echo "<div class='hosted-url-box'>❌ Error: Only HTML, CSS, JS, and PHP files are allowed.</div>";
+                    continue;
+                }
 
-            if (strtolower($fileExtension) !== $allowedExtension) {
-                echo "<div class='hosted-url-box'>❌ Error: Only HTML files are allowed.</div>";
-            } else {
                 if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
                     mkdir($uploadDir);
                 }
 
-                $uploadedFile = $uploadDir . basename($_FILES['uploadedFile']['name']);
+                $uploadedFile = $uploadDir . basename($fileName);
 
-                if (move_uploaded_file($_FILES['uploadedFile']['tmp_name'], $uploadedFile)) {
-                    $fileName = basename($_FILES['uploadedFile']['name']);
+                if (move_uploaded_file($_FILES['uploadedFile']['tmp_name'][$key], $uploadedFile)) {
                     $hostedURL = "http://".$_SERVER['HTTP_HOST']."/".$uploadedFile;
                     echo "<div class='hosted-url-box'>
-                            <a href='".$hostedURL."' target='_blank' id='hostedLink'>".$hostedURL."</a>
-                            <button class='copy-btn' onclick='copyToClipboard()'>Copy</button>
+                            <a href='".$hostedURL."' target='_blank'>".$hostedURL."</a>
+                            <button class='copy-btn' onclick='copyToClipboard(\"".$hostedURL."\")'>Copy</button>
                           </div>";
                 } else {
-                    echo "<div class='hosted-url-box'>❌ Error uploading file.</div>";
+                    echo "<div class='hosted-url-box'>❌ Error uploading file: ".$fileName."</div>";
                 }
             }
         }
@@ -68,16 +70,15 @@
     </div>
 
     <center>
-        <a href="https://t.me/DEVSNP">
+        <a href="https://t.me/ROMEKTRICKS">
             <button class="custom-btn">Made by ROMEK-XD</button>
         </a>
     </center>
 
     <script>
-        function copyToClipboard() {
-            var link = document.getElementById("hostedLink").textContent;
-            navigator.clipboard.writeText(link).then(() => {
-                alert("Copied: " + link);
+        function copyToClipboard(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert("Copied: " + url);
             }).catch(err => {
                 console.error('Error copying link: ', err);
             });
