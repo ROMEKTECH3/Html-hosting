@@ -42,29 +42,34 @@
         button:hover { background: linear-gradient(135deg, #0066ff, #00ccff); }
         .url-box {
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
+            padding: 10px;
             border-radius: 5px;
             margin-top: 20px;
             font-size: 14px;
             display: none;
             align-items: center;
             justify-content: space-between;
+            flex-direction: row;
         }
         .url-box a {
             color: #00ccff;
             text-decoration: none;
             font-weight: bold;
-            flex: 1;
-            word-break: break-word;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .copy-btn {
             background-color: #00ccff;
             color: white;
             border: none;
             padding: 5px 10px;
+            font-size: 12px;
             cursor: pointer;
             border-radius: 5px;
             font-weight: bold;
+            margin-left: 10px;
         }
     </style>
 </head>
