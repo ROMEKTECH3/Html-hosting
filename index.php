@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <title>Zaynix-XD Hosting</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,38 +62,48 @@
         }
     </style>
 </head>
-<body>
+<body><div class="container">
+    <h2>Zaynix-XD Hosting</h2>
+    <p>Upload Files & Get a Custom URL</p>
+    <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="text" name="folderName" placeholder="Enter Folder Name (optional)">
+        <input type="file" name="uploadedFile[]" multiple required>
+        <button type="submit">Upload</button>
+    </form>
 
-    <div class="container">
-        <h2>Zaynix-XD Hosting</h2>
-        <p>Upload Files & Get a Custom URL</p>
-        <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
-            <input type="text" name="folderName" placeholder="Enter Folder Name (optional)">
-            <input type="file" name="uploadedFile[]" multiple required>
-            <button type="submit">Upload</button>
-        </form>
-
-        <div id="upload-result" class="url-box">
-            <a id="uploaded-url" href="#" target="_blank"></a>
-            <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
-        </div>
+    <div id="upload-result" class="url-box">
+        <a id="uploaded-url" href="#" target="_blank"></a>
+        <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
     </div>
+</div>
 
-    <div class="footer">
-        <a href="https://wa.me/your-whatsapp-channel-link" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-        </a>
-        <p>MADE BY <span style="color: red;">❤</span> ROMEK-XD</p>
-    </div>
+<div class="footer">
+    <a href="https://wa.me/your-whatsapp-channel-link" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    </a>
+    <p>MADE BY <span style="color: red;">❤</span> ROMEK-XD</p>
+</div>
 
-    <script>
-        function copyToClipboard() {
-            let url = document.getElementById("uploaded-url").innerText;
-            navigator.clipboard.writeText(url).then(() => {
-                alert("Copied: " + url);
-            });
-        }
-    </script>
+<script>
+    document.getElementById("upload-form").onsubmit = async function(event) {
+        event.preventDefault();
+        
+        let formData = new FormData(this);
+        let response = await fetch("upload.php", { method: "POST", body: formData });
+        let result = await response.text();
+
+        document.getElementById("upload-result").style.display = "block";
+        document.getElementById("uploaded-url").href = result;
+        document.getElementById("uploaded-url").innerText = result;
+    };
+
+    function copyToClipboard() {
+        let url = document.getElementById("uploaded-url").innerText;
+        navigator.clipboard.writeText(url).then(() => {
+            alert("Copied: " + url);
+        });
+    }
+</script>
 
 </body>
 </html>

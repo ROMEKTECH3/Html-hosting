@@ -20,8 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
 
         if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
-            echo "<script>alert('❌ Only allowed file types: HTML, CSS, JS, PHP, JSON, PY, MD, TXT, LICENSE, XML');</script>";
-            continue;
+            http_response_code(400);
+            echo "❌ Only allowed file types: HTML, CSS, JS, PHP, JSON, PY, MD, TXT, LICENSE, XML";
+            exit;
         }
 
         $newFileName = uniqid() . "_" . basename($fileName);
@@ -34,13 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
 
     if (!empty($uploadedFiles)) {
         $folderURL = "https://" . $_SERVER['HTTP_HOST'] . "/uploads/$customName/";
-        echo "<script>
-                document.getElementById('upload-result').style.display = 'block';
-                document.getElementById('uploaded-url').href = '$folderURL';
-                document.getElementById('uploaded-url').innerText = '$folderURL';
-              </script>";
+        echo $folderURL; // Sends plain URL for JavaScript
     } else {
-        echo "<script>alert('❌ No valid files uploaded.');</script>";
+        http_response_code(400);
+        echo "❌ No valid files uploaded.";
     }
 }
 ?>
