@@ -1,7 +1,7 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
     $uploadBaseDir = 'uploads/'; 
-    $allowedExtensions = ['html', 'css', 'js', 'php', 'txt'];
+    $allowedExtensions = ['html', 'css', 'js', 'php', 'json', 'py'];
 
     $customName = isset($_POST['folderName']) ? preg_replace('/[^a-zA-Z0-9-_]/', '', $_POST['folderName']) : '';
     if (empty($customName)) {
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
 
         if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
-            echo "<div class='url-box'>❌ Error: Only HTML, CSS, JS, PHP & TXT files are allowed.</div>";
+            echo "<script>alert('❌ Only HTML, CSS, JS, PHP, JSON, and Python files allowed.');</script>";
             continue;
         }
 
@@ -27,19 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
 
         if (move_uploaded_file($_FILES['uploadedFile']['tmp_name'][$key], $uploadedFile)) {
             $uploadedFiles[] = $fileName;
-        } else {
-            echo "<div class='url-box'>❌ Error uploading file: $fileName</div>";
         }
     }
 
     if (!empty($uploadedFiles)) {
         $folderURL = "https://" . $_SERVER['HTTP_HOST'] . "/uploads/$customName/";
         echo "<script>
-                document.getElementById('upload-result').innerHTML = 
-                `<div class='url-box'>
-                    <a href='$folderURL' target='_blank'>$folderURL</a> 
-                    <button class='copy-btn' onclick='copyToClipboard(\"$folderURL\")'>Copy</button>
-                </div>`;
+                document.getElementById('upload-result').style.display = 'flex';
+                document.getElementById('uploaded-url').href = '$folderURL';
+                document.getElementById('uploaded-url').innerText = '$folderURL';
               </script>";
     }
 }
