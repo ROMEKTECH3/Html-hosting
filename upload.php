@@ -1,7 +1,7 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
     $uploadBaseDir = 'uploads/'; 
-    $allowedExtensions = ['html', 'css', 'js', 'php', 'json', 'py'];
+    $allowedExtensions = ['html', 'css', 'js', 'php', 'json', 'py', 'md', 'txt', 'license'];
 
     $customName = isset($_POST['folderName']) ? preg_replace('/[^a-zA-Z0-9-_]/', '', $_POST['folderName']) : '';
     if (empty($customName)) {
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFile'])) {
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
 
         if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
-            die("❌ Only HTML, CSS, JS, PHP, JSON, and Python files allowed.");
+            die("❌ Only allowed file types: HTML, CSS, JS, PHP, JSON, Python, README.md, LICENCE, TXT");
         }
 
         $uploadedFile = $uploadDir . basename($fileName);
